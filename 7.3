@@ -1,0 +1,32 @@
+class BankAccount:
+    def __init__(self, number: str, owner: str, balance: float = 0.0):
+        self.number = number
+        self.owner = owner
+        self.__balance = max(0.0, balance)
+
+    @property
+    def balance(self) -> float:
+        return self.__balance
+
+    def deposit(self, amount: float) -> None:
+        if amount > 0:
+            self.__balance += amount
+
+    def withdraw(self, amount: float) -> bool:
+        if 0 < amount <= self.__balance:
+            self.__balance -= amount
+            return True
+        return False
+
+    def transfer(self, target: "BankAccount", amount: float) -> bool:
+        if self.withdraw(amount):
+            target.deposit(amount)
+            return True
+        return False
+
+
+if __name__ == "__main__":
+    acc1 = BankAccount("408178101", "Иванов И.И.", 10000.0)
+    acc2 = BankAccount("408178102", "Петров П.П.", 2500.0)
+    acc1.transfer(acc2, 3000.0)
+    print(f"{acc1.owner}: {acc1.balance} руб. | {acc2.owner}: {acc2.balance} руб.")
