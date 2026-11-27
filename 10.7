@@ -1,0 +1,66 @@
+import unittest
+
+
+class FinanceTracker:
+    """Модуль финансового учёта доходов и расходов."""
+
+    def __init__(self):
+        self.records: list[dict] = []
+
+    def add_record(self, kind: str, category: str, amount: float) -> None:
+        if kind not in ("income", "expense") or amount <= 0:
+            raise ValueError("Некорректные параметры операции")
+        self.records.append({"kind": kind, "category": category, "amount": amount})
+
+    def get_balance(self) -> float:
+        inc = sum(r["amount"] for r in self.records if r["kind"] == "income")
+        exp = sum(r["amount"] for r in self.records if r["kind"] == "expense")
+        return inc - exp
+
+
+class TestFinanceTracker(unittest.TestCase):
+    def setUp(self):
+        self.ft = FinanceTracker()
+
+    def test_01_initial_balance(self):
+        self.assertEqual(self.ft.get_balance(), 0.0)
+
+    def test_02_add_income(self):
+        self.ft.add_record("income", "ЗП", 50000)
+        self.assertEqual(self.ft.get_balance(), 50000)
+
+    def test_03_add_expense(self):
+        self.ft.add_record("expense", "Еда", 1200)
+        self.assertEqual(self.ft.get_balance(), -1200)
+
+    def test_04_mixed_balance(self):
+        self.ft.add_record("income", "ЗП", 1000)
+        self.ft.add_record("expense", "Такси", 300)
+        self.assertEqual(self.ft.get_balance(), 700)
+
+    def test_05_negative_amount(self):
+        self.assertRaises(ValueError, self.ft.add_record, "income", "ЗП", -100)
+
+    def test_06_zero_amount(self):
+        self.assertRaises(ValueError, self.ft.add_record, "expense", "Еда", 0)
+
+    def test_07_invalid_kind(self):
+        self.assertRaises(ValueError, self.ft.add_record, "bonus", "Прочее", 500)
+
+    def test_08_records_count(self):
+        self.ft.add_record("income", "A", 10)
+        self.ft.add_record("expense", "B", 5)
+        self.assertEqual(len(self.ft.records), 2)
+
+    def test_09_float_precision(self):
+        self.ft.add_record("income", "A", 10.5)
+        self.ft.add_record("expense", "B", 0.5)
+        self.assertAlmostEqual(self.ft.get_balance(), 10.0)
+
+    def test_10_category_saved(self):
+        self.ft.add_record("expense", "Транспорт", 150)
+        self.assertEqual(self.ft.records[0]["category"], "Транспорт")
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)
