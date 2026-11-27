@@ -1,0 +1,15 @@
+n: int = int(input("Введите верхнюю границу N: "))
+primes: list[int] = []
+
+# Перебираем числа от 2 до N
+for num in range(2, n + 1):
+    is_prime: bool = True
+    # Проверяем делители до квадратного корня из num
+    for div in range(2, int(num ** 0.5) + 1):
+        if num % div == 0:
+            is_prime = False
+            break
+    if is_prime:
+        primes.append(num)
+
+print(f"Простые числа от 1 до {n}:", primes)
