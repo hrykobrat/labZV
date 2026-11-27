@@ -1,0 +1,11 @@
+text: str = input("Введите строку для проверки: ")
+
+# Удаляем пробелы и приводим к нижнему регистру
+cleaned: str = "".join(ch.lower() for ch in text if not ch.isspace())
+
+if not cleaned:
+    print("Введена пустая строка или только пробелы.")
+elif cleaned == cleaned[::-1]:
+    print("Строка является палиндромом.")
+else:
+    print("Строка НЕ является палиндромом.")
