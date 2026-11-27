@@ -1,0 +1,21 @@
+filename: str = "numbers.txt"
+data: list[int] = [10, 25, 30, 45, 50]
+
+try:
+    # Запись массива в файл через менеджер контекста
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(" ".join(map(str, data)))
+
+    # Чтение и обработка данных
+    with open(filename, "r", encoding="utf-8") as f:
+        nums = [float(x) for x in f.read().split()]
+    if not nums:
+        raise ZeroDivisionError("Файл пуст")
+    print(f"Прочитано: {nums}")
+    print(f"Сумма: {sum(nums)}, Среднее: {sum(nums) / len(nums):.2f}")
+except FileNotFoundError:
+    print("Ошибка: файл не найден.")
+except ValueError:
+    print("Ошибка: в файле содержатся некорректные нечисловые данные.")
+except ZeroDivisionError as e:
+    print(f"Ошибка вычисления: {e}")
