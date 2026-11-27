@@ -1,0 +1,52 @@
+from abc import ABC, abstractmethod
+import math
+
+
+class Shape(ABC):
+    @abstractmethod
+    def area(self) -> float:
+        pass
+
+    @abstractmethod
+    def perimeter(self) -> float:
+        pass
+
+
+class Circle(Shape):
+    def __init__(self, r: float):
+        self.r = r
+
+    def area(self) -> float:
+        return math.pi * self.r ** 2
+
+    def perimeter(self) -> float:
+        return 2 * math.pi * self.r
+
+
+class Rectangle(Shape):
+    def __init__(self, w: float, h: float):
+        self.w, self.h = w, h
+
+    def area(self) -> float:
+        return self.w * self.h
+
+    def perimeter(self) -> float:
+        return 2 * (self.w + self.h)
+
+
+class Triangle(Shape):
+    def __init__(self, a: float, b: float, c: float):
+        self.a, self.b, self.c = a, b, c
+
+    def perimeter(self) -> float:
+        return self.a + self.b + self.c
+
+    def area(self) -> float:
+        p = self.perimeter() / 2
+        return math.sqrt(p * (p - self.a) * (p - self.b) * (p - self.c))
+
+
+if __name__ == "__main__":
+    shapes: list[Shape] = [Circle(5), Rectangle(4, 6), Triangle(3, 4, 5)]
+    for s in shapes:
+        print(f"{s.__class__.__name__}: S = {s.area():.2f}, P = {s.perimeter():.2f}")
