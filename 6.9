@@ -1,0 +1,31 @@
+def input_coeffs() -> tuple[float, float, float]:
+    """Функция ввода коэффициентов уравнения."""
+    a = float(input("Введите a: "))
+    b = float(input("Введите b: "))
+    c = float(input("Введите c: "))
+    return a, b, c
+
+
+def solve_quadratic(a: float, b: float, c: float) -> tuple[float, ...]:
+    """Функция расчёта действительных корней."""
+    if a == 0:
+        return (-c / b,) if b != 0 else ()
+    d = b ** 2 - 4 * a * c
+    if d > 0:
+        return ((-b + d ** 0.5) / (2 * a), (-b - d ** 0.5) / (2 * a))
+    elif d == 0:
+        return (-b / (2 * a),)
+    return ()
+
+
+def print_result(roots: tuple[float, ...]) -> None:
+    """Функция вывода результата."""
+    if not roots:
+        print("Действительных корней нет.")
+    else:
+        print("Найденные корни:", [round(r, 4) for r in roots])
+
+
+if __name__ == "__main__":
+    a, b, c = input_coeffs()
+    print_result(solve_quadratic(a, b, c))
