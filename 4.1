@@ -1,0 +1,17 @@
+import random
+
+# Генерируем массив из 10 случайных целых чисел
+arr: list[int] = [random.randint(-50, 50) for _ in range(10)]
+print("Массив:", arr)
+
+total: int = sum(arr)
+avg: float = total / len(arr)
+min_val: int = min(arr)
+max_val: int = max(arr)
+min_idx: int = arr.index(min_val)
+max_idx: int = arr.index(max_val)
+
+print(f"Сумма элементов: {total}")
+print(f"Среднее арифметическое: {avg:.2f}")
+print(f"Минимум: {min_val} (индекс {min_idx})")
+print(f"Максимум: {max_val} (индекс {max_idx})")
